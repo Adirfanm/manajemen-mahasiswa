@@ -29,7 +29,7 @@
                     <h1 class="text-xl font-bold text-slate-900">Manajemen Data Mahasiswa</h1>
                 </div>
                 <a href="{{ route('mahasiswa.create') }}"
-                   class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+                    class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
                     + Tambah Mahasiswa
                 </a>
             </div>
@@ -50,36 +50,47 @@
             @endif
 
             {{-- Filter Form --}}
-            <form method="GET" action="{{ route('mahasiswa.index') }}"
-                  class="flex flex-wrap items-center gap-3">
+            <form method="GET" action="{{ route('mahasiswa.index') }}" class="flex flex-wrap items-center gap-3">
                 <input type="text" name="keyword" value="{{ $keyword }}"
-                       placeholder="Cari NIM, nama, email, atau jurusan…"
-                       class="flex-1 min-w-[200px] rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                    placeholder="Cari NIM, nama, email, atau jurusan…"
+                    class="flex-1 min-w-[200px] rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400">
 
                 <select name="search_method"
-                        class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                    <option value="linear"     {{ $searchMethod === 'linear'     ? 'selected' : '' }}>Linear Search</option>
-                    <option value="sequential" {{ $searchMethod === 'sequential' ? 'selected' : '' }}>Sequential Search</option>
-                    <option value="binary"     {{ $searchMethod === 'binary'     ? 'selected' : '' }}>Binary Search by NIM</option>
+                    class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                    <option value="linear" {{ $searchMethod === 'linear' ? 'selected' : '' }}>Linear Search</option>
+                    <option value="sequential" {{ $searchMethod === 'sequential' ? 'selected' : '' }}>Sequential Search
+                    </option>
+                    <option value="binary" {{ $searchMethod === 'binary' ? 'selected' : '' }}>Binary Search by NIM
+                    </option>
                 </select>
 
                 <select name="sort_method"
-                        class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                    <option value="none"           {{ $sortMethod === 'none'           ? 'selected' : '' }}>Tanpa Sorting</option>
-                    <option value="bubble_nama"    {{ $sortMethod === 'bubble_nama'    ? 'selected' : '' }}>Bubble Sort by Nama</option>
-                    <option value="selection_nim"  {{ $sortMethod === 'selection_nim'  ? 'selected' : '' }}>Selection Sort by NIM</option>
-                    <option value="merge_semester" {{ $sortMethod === 'merge_semester' ? 'selected' : '' }}>Merge Sort by Semester</option>
+                    class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                    <option value="none" {{ $sortMethod === 'none' ? 'selected' : '' }}>Tanpa Sorting
+                    </option>
+                    <option value="bubble_nama" {{ $sortMethod === 'bubble_nama' ? 'selected' : '' }}>Bubble Sort by
+                        Nama</option>
+                    <option value="selection_nim" {{ $sortMethod === 'selection_nim' ? 'selected' : '' }}>Selection
+                        Sort by NIM</option>
+                    <option value="merge_semester" {{ $sortMethod === 'merge_semester' ? 'selected' : '' }}>Merge Sort
+                        by Semester</option>
                 </select>
 
                 <button type="submit"
-                        class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+                    class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
                     Terapkan
                 </button>
                 <a href="{{ route('mahasiswa.index') }}"
-                   class="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-500 hover:text-slate-700">
+                    class="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-500 hover:text-slate-700">
                     Reset
                 </a>
             </form>
+
+            @if ($searchTime !== null)
+                <p>Waktu pencarian:
+                    <strong>{{ number_format($searchTime, 6) }} ms</strong>
+                </p>
+            @endif
 
             {{-- Pointer Simulation --}}
             <div class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">
@@ -114,22 +125,24 @@
                                 <td class="px-4 py-3 text-slate-500">{{ $row['email'] }}</td>
                                 <td class="px-4 py-3 text-slate-600">{{ $row['jurusan'] }}</td>
                                 <td class="px-4 py-3">
-                                    <span class="rounded-full bg-violet-100 px-2.5 py-0.5 text-xs font-semibold text-violet-700">
+                                    <span
+                                        class="rounded-full bg-violet-100 px-2.5 py-0.5 text-xs font-semibold text-violet-700">
                                         {{ $row['semester'] }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3">
                                     <div class="flex items-center gap-2">
                                         <a href="{{ route('mahasiswa.edit', $row['nim']) }}"
-                                           class="rounded-md border border-slate-200 px-3 py-1 text-xs text-slate-600 hover:border-indigo-400 hover:text-indigo-600">
+                                            class="rounded-md border border-slate-200 px-3 py-1 text-xs text-slate-600 hover:border-indigo-400 hover:text-indigo-600">
                                             Edit
                                         </a>
-                                        <form action="{{ route('mahasiswa.destroy', $row['nim']) }}" method="POST" class="inline">
+                                        <form action="{{ route('mahasiswa.destroy', $row['nim']) }}" method="POST"
+                                            class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                    onclick="return confirm('Yakin ingin menghapus data ini?')"
-                                                    class="rounded-md border border-red-200 px-3 py-1 text-xs text-red-500 hover:border-red-400 hover:text-red-600">
+                                                onclick="return confirm('Yakin ingin menghapus data ini?')"
+                                                class="rounded-md border border-red-200 px-3 py-1 text-xs text-red-500 hover:border-red-400 hover:text-red-600">
                                                 Hapus
                                             </button>
                                         </form>
@@ -162,14 +175,46 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-600">Pencarian umum</td><td class="px-4 py-2.5 text-indigo-500">Linear Search</td><td class="px-4 py-2.5 font-mono text-green-600">O(n)</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-600">Pencarian berurutan</td><td class="px-4 py-2.5 text-indigo-500">Sequential Search</td><td class="px-4 py-2.5 font-mono text-green-600">O(n)</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-600">Pencarian NIM</td><td class="px-4 py-2.5 text-indigo-500">Binary Search</td><td class="px-4 py-2.5 font-mono text-green-600">O(log n)</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-600">Pengurutan nama</td><td class="px-4 py-2.5 text-indigo-500">Bubble Sort</td><td class="px-4 py-2.5 font-mono text-amber-500">O(n²)</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-600">Pengurutan NIM</td><td class="px-4 py-2.5 text-indigo-500">Selection Sort</td><td class="px-4 py-2.5 font-mono text-amber-500">O(n²)</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-600">Pengurutan semester</td><td class="px-4 py-2.5 text-indigo-500">Merge Sort</td><td class="px-4 py-2.5 font-mono text-green-600">O(n log n)</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-600">Tambah data</td><td class="px-4 py-2.5 text-indigo-500">Append + simpan file</td><td class="px-4 py-2.5 font-mono text-green-600">O(n)</td></tr>
-                            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-600">Hapus data</td><td class="px-4 py-2.5 text-indigo-500">Filter + simpan file</td><td class="px-4 py-2.5 font-mono text-green-600">O(n)</td></tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-2.5 text-slate-600">Pencarian umum</td>
+                                <td class="px-4 py-2.5 text-indigo-500">Linear Search</td>
+                                <td class="px-4 py-2.5 font-mono text-green-600">O(n)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-2.5 text-slate-600">Pencarian berurutan</td>
+                                <td class="px-4 py-2.5 text-indigo-500">Sequential Search</td>
+                                <td class="px-4 py-2.5 font-mono text-green-600">O(n)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-2.5 text-slate-600">Pencarian NIM</td>
+                                <td class="px-4 py-2.5 text-indigo-500">Binary Search</td>
+                                <td class="px-4 py-2.5 font-mono text-green-600">O(log n)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-2.5 text-slate-600">Pengurutan nama</td>
+                                <td class="px-4 py-2.5 text-indigo-500">Bubble Sort</td>
+                                <td class="px-4 py-2.5 font-mono text-amber-500">O(n²)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-2.5 text-slate-600">Pengurutan NIM</td>
+                                <td class="px-4 py-2.5 text-indigo-500">Selection Sort</td>
+                                <td class="px-4 py-2.5 font-mono text-amber-500">O(n²)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-2.5 text-slate-600">Pengurutan semester</td>
+                                <td class="px-4 py-2.5 text-indigo-500">Merge Sort</td>
+                                <td class="px-4 py-2.5 font-mono text-green-600">O(n log n)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-2.5 text-slate-600">Tambah data</td>
+                                <td class="px-4 py-2.5 text-indigo-500">Append + simpan file</td>
+                                <td class="px-4 py-2.5 font-mono text-green-600">O(n)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-2.5 text-slate-600">Hapus data</td>
+                                <td class="px-4 py-2.5 text-indigo-500">Filter + simpan file</td>
+                                <td class="px-4 py-2.5 font-mono text-green-600">O(n)</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

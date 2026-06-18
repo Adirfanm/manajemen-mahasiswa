@@ -21,7 +21,11 @@ class MahasiswaController extends Controller
             $searchMethod = $request->query('search_method', 'linear');
             $sortMethod = $request->query('sort_method', 'none');
 
+            $searchTime = null;
+
             if ($keyword !== '') {
+                $startTime = microtime(true);
+
                 if ($searchMethod === 'binary') {
                     $found = SearchService::binarySearchByNim($data, $keyword);
                     $data = $found ? [$found] : [];
@@ -30,6 +34,8 @@ class MahasiswaController extends Controller
                 } else {
                     $data = SearchService::linearSearch($data, $keyword);
                 }
+                $endTime = microtime(true);
+                $searchTime = ($endTime - $startTime) * 1000;
             }
 
             if ($sortMethod === 'bubble_nama') {
@@ -47,7 +53,8 @@ class MahasiswaController extends Controller
                 'keyword',
                 'searchMethod',
                 'sortMethod',
-                'pointerSample'
+                'pointerSample',
+                'searchTime',
             ));
         } catch (Exception $e) {
             return view('mahasiswa.index', [
